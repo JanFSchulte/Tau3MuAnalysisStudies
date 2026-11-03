@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Environments
+.pixi/
+*.egg-info/
+
+# CMSSW / CRAB generated
+production/PhysicsTools/Tau3muNANO/crab_submission/20*_era*/
+crab_projects/
+*.tmp
+
+# Outputs: these live outside Git (see README "Outputs")
+*.root
+*.npz
+*.parquet
+*.log
+*.bak*
+outputs/
