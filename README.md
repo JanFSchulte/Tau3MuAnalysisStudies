@@ -20,48 +20,20 @@ This repository covers the Purdue workflow for the Run 3 τ→3µ search (AN-202
 | `Momentum/` | Muon momentum scale/resolution from Ds→φπ (AN §12.1), J. Schulte |
 | `sPlot/` | sPlot studies for the classifier data/MC comparison, J. Schulte |
 | `upstream_sources.json` | Where copied code came from (repository, revision, files, local changes) |
+| `AGENTS.md`, `docs/` | Setup and production guides, for people and coding agents |
 
 *TODO:* `src/tau3mu/` (selections, control fits, systematics, ML), `config/`, `tests/`.
 
 ## Quick start
 
-*TODO.* The plan is two environments, kept separate:
+- **New here, or working with a coding agent?** Read [`AGENTS.md`](AGENTS.md) and [`docs/SETUP.md`](docs/SETUP.md):
+  checkout, Python environment, proxy, and a first data read on Purdue AF.
+- **Producing ntuples** (optional): see [`docs/PRODUCTION.md`](docs/PRODUCTION.md). It covers the CMSSW build, a
+  local test, and CRAB config generation and submission.
 
-- **Production:** a CMSSW release area (`CMSSW_15_1_1` was used for the 2025 data and 2024 MC
-  ntuples).
-- **Analysis:** a Python environment. On the Purdue AF this is
-  `/work/pixi/global/.pixi/envs/default/bin/python`. Analysis does not need CMSSW.
-
-## Production (ntuples from MiniAOD)
-
-*TODO: a setup script that stages this package into a CMSSW area, and submit/status/resubmit commands.*
-
-Local test on 1000 signal-MC events, run from `$CMSSW_BASE/src` with this package under `src/PhysicsTools/`:
-
-```bash
-cmsRun PhysicsTools/Tau3muNANO/test/test_Tau3Mu_signal_purdue_cfg.py isMC=True
-```
-
-The original `test_Tau3Mu_cfg.py` / `test_DsPhiPi_cfg.py` are templates whose default input is an MC file. To run on
-data, set a data input file **and** the matching GlobalTag explicitly; they are not ready-to-run 2025 data configs.
-
-- Configs:
-  - data (templates, used by CRAB): `test/test_Tau3Mu_cfg.py`, `test/test_DsPhiPi_cfg.py`
-  - τ→3µ signal MC: `test/test_Tau3Mu_signal_crab_purdue_cfg.py`
-  - Ds→φµν (trigger study): `test/test_Tau3Mu_phimunu_purdue_cfg.py`
-- CRAB: `crab_submission/submit_CRAB_purdue.py` (data and `--isMC`), with templates in
-  `crab_submission/templates/*_purdue.py` and samples/eras in `crab_submission/Runs_purdue.json`.
-- `crab_submission/submit_CRAB_purdue.py` writes one directory per era and channel, and never submits by itself. Each
-  directory holds `CRAB_stream_{0..7}.py` (data) or `CRAB_MC.py` (MC), plus a `submit.sh`.
-  - For data, **`submit.sh` submits all eight streams**.
-  - To submit a single stream, run `crab submit -c CRAB_stream_N.py` in that directory.
-- `crab_submission/verify_before_submit.py` checks the datasets against DAS and the golden JSON
-  before you submit. 2025 only for now.
-- CRAB needs a VOMS proxy **and** a myproxy delegation under your own credentials.
-  - The CRAB client creates the delegation during `crab submit`, and needs an interactive
-    terminal to ask for your pass phrase.
-  - This procedure has been used by one user only. It has not been validated for other accounts.
-- Outputs go to `T2_US_Purdue` under **your own** `/store/user/<cern-username>/`.
+There are two separate environments:
+- **Production** uses a CMSSW release area (`CMSSW_15_1_1`).
+- **Analysis** uses plain Python: on the AF, `/work/pixi/global/.pixi/envs/default/bin/python`. It needs no CMSSW.
 
 ## Data access at Purdue
 
